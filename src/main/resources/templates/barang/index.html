@@ -5,9 +5,9 @@
 <body>
     <div layout:fragment="main-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Daftar Mahasiswa</h2>
-            <a href="/mahasiswa/add" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Tambah Mahasiswa
+            <h2>Daftar Barang</h2>
+            <a href="/barang/add" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Tambah Barang
             </a>
         </div>
 
@@ -27,11 +27,11 @@
         <!-- Search Form -->
         <div class="card mb-4">
             <div class="card-body">
-                <form th:action="@{/mahasiswa}" method="get" class="row g-3">
+                <form th:action="@{/barang}" method="get" class="row g-3">
                     <div class="col-md-6">
                         <div class="input-group">
                             <input type="text" class="form-control" name="keyword" th:value="${keyword}"
-                                placeholder="Cari nama atau jurusan...">
+                                placeholder="Cari nama atau merk...">
                             <button class="btn btn-primary" type="submit">
                                 <i class="bi bi-search"></i> Cari
                             </button>
@@ -44,7 +44,7 @@
                             <select class="form-select" name="sortBy" onchange="this.form.submit()">
                                 <option value="id" th:selected="${sortBy == 'id'}">ID</option>
                                 <option value="nama" th:selected="${sortBy == 'nama'}">Nama</option>
-                                <option value="jurusan" th:selected="${sortBy == 'jurusan'}">Jurusan</option>
+                                <option value="merk" th:selected="${sortBy == 'merk'}">Merk</option>
                             </select>
                             <select class="form-select" name="sortDir" onchange="this.form.submit()">
                                 <option value="asc" th:selected="${sortDir == 'asc'}">Naik</option>
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="col-md-2">
-                        <a th:href="@{/mahasiswa}" class="btn btn-secondary w-100">
+                        <a th:href="@{/barang}" class="btn btn-secondary w-100">
                             <i class="bi bi-x-circle"></i> Reset
                         </a>
                     </div>
@@ -65,7 +65,7 @@
         <!-- Results Information -->
         <div class="alert alert-info" th:if="${keyword != null && !keyword.isEmpty()}">
             Hasil pencarian untuk: <strong th:text="${keyword}"></strong>
-            <span class="ms-2 badge bg-primary" th:text="${mahasiswaList.size() + ' hasil'}"></span>
+            <span class="ms-2 badge bg-primary" th:text="${barangList.size() + ' hasil'}"></span>
         </div>
 
         <!-- Table -->
@@ -77,7 +77,7 @@
                             <tr>
                                 <th>
                                     <a class="text-white text-decoration-none"
-                                        th:href="@{/mahasiswa(keyword=${keyword}, sortBy='id', sortDir=${sortBy == 'id' ? reverseSortDir : 'asc'})}">
+                                        th:href="@{/barang(keyword=${keyword}, sortBy='id', sortDir=${sortBy == 'id' ? reverseSortDir : 'asc'})}">
                                         ID
                                         <i class="bi"
                                             th:classappend="${sortBy == 'id' ? (sortDir == 'asc' ? 'bi-sort-numeric-down' : 'bi-sort-numeric-up') : 'bi-filter'}"></i>
@@ -85,7 +85,7 @@
                                 </th>
                                 <th>
                                     <a class="text-white text-decoration-none"
-                                        th:href="@{/mahasiswa(keyword=${keyword}, sortBy='nama', sortDir=${sortBy == 'nama' ? reverseSortDir : 'asc'})}">
+                                        th:href="@{/barang(keyword=${keyword}, sortBy='nama', sortDir=${sortBy == 'nama' ? reverseSortDir : 'asc'})}">
                                         Nama
                                         <i class="bi"
                                             th:classappend="${sortBy == 'nama' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
@@ -93,34 +93,34 @@
                                 </th>
                                 <th>
                                     <a class="text-white text-decoration-none"
-                                        th:href="@{/mahasiswa(keyword=${keyword}, sortBy='jurusan', sortDir=${sortBy == 'jurusan' ? reverseSortDir : 'asc'})}">
-                                        Jurusan
+                                        th:href="@{/barang(keyword=${keyword}, sortBy='merk', sortDir=${sortBy == 'merk' ? reverseSortDir : 'asc'})}">
+                                        Merk
                                         <i class="bi"
-                                            th:classappend="${sortBy == 'jurusan' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
+                                            th:classappend="${sortBy == 'merk' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
                                     </a>
                                 </th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="mahasiswa : ${mahasiswaList}">
-                                <td th:text="${mahasiswa.id}"></td>
-                                <td th:text="${mahasiswa.nama}"></td>
-                                <td th:text="${mahasiswa.jurusan.namaJurusan}"></td>
+                            <tr th:each="barang : ${barangList}">
+                                <td th:text="${barang.id}"></td>
+                                <td th:text="${barang.nama}"></td>
+                                <td th:text="${barang.merk.namaMerk}"></td>
                                 <td>
-                                    <a th:href="@{/mahasiswa/edit/{id}(id=${mahasiswa.id})}"
+                                    <a th:href="@{/barang/edit/{id}(id=${barang.id})}"
                                         class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i> Edit
                                     </a>
-                                    <a th:href="@{/mahasiswa/delete/{id}(id=${mahasiswa.id})}"
+                                    <a th:href="@{/barang/delete/{id}(id=${barang.id})}"
                                         class="btn btn-sm btn-danger"
                                         onclick="return confirm('Yakin ingin menghapus?')">
                                         <i class="bi bi-trash"></i> Hapus
                                     </a>
                                 </td>
                             </tr>
-                            <tr th:if="${mahasiswaList.empty}">
-                                <td colspan="4" class="text-center">Tidak ada data mahasiswa</td>
+                            <tr th:if="${barangList.empty}">
+                                <td colspan="4" class="text-center">Tidak ada data barang</td>
                             </tr>
                         </tbody>
                     </table>

@@ -5,9 +5,9 @@
 <body>
     <div layout:fragment="main-content">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Daftar Jurusan</h2>
-            <a href="/jurusan/add" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Tambah Jurusan
+            <h2>Daftar Merk</h2>
+            <a href="/merk/add" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Tambah Merk
             </a>
         </div>
 
@@ -28,11 +28,11 @@
         <!-- Search Form -->
         <div class="card mb-4">
             <div class="card-body">
-                <form th:action="@{/jurusan}" method="get" class="row g-3">
+                <form th:action="@{/merk}" method="get" class="row g-3">
                     <div class="col-md-6">
                         <div class="input-group">
                             <input type="text" class="form-control" name="keyword" th:value="${keyword}"
-                                placeholder="Cari nama jurusan...">
+                                placeholder="Cari nama merk...">
                             <button class="btn btn-primary" type="submit">
                                 <i class="bi bi-search"></i> Cari
                             </button>
@@ -44,7 +44,7 @@
                             <label class="input-group-text">Urutkan</label>
                             <select class="form-select" name="sortBy" onchange="this.form.submit()">
                                 <option value="id" th:selected="${sortBy == 'id'}">ID</option>
-                                <option value="namaJurusan" th:selected="${sortBy == 'namaJurusan'}">Nama Jurusan
+                                <option value="namaMerk" th:selected="${sortBy == 'namaMerk'}">Nama Merk
                                 </option>
                             </select>
                             <select class="form-select" name="sortDir" onchange="this.form.submit()">
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="col-md-2">
-                        <a th:href="@{/jurusan}" class="btn btn-secondary w-100">
+                        <a th:href="@{/merk}" class="btn btn-secondary w-100">
                             <i class="bi bi-x-circle"></i> Reset
                         </a>
                     </div>
@@ -66,7 +66,7 @@
         <!-- Results Information -->
         <div class="alert alert-info" th:if="${keyword != null && !keyword.isEmpty()}">
             Hasil pencarian untuk: <strong th:text="${keyword}"></strong>
-            <span class="ms-2 badge bg-primary" th:text="${jurusanList.size() + ' hasil'}"></span>
+            <span class="ms-2 badge bg-primary" th:text="${merkList.size() + ' hasil'}"></span>
         </div>
 
         <!-- Table -->
@@ -78,7 +78,7 @@
                             <tr>
                                 <th>
                                     <a class="text-white text-decoration-none"
-                                        th:href="@{/jurusan(keyword=${keyword}, sortBy='id', sortDir=${sortBy == 'id' ? reverseSortDir : 'asc'})}">
+                                        th:href="@{/merk(keyword=${keyword}, sortBy='id', sortDir=${sortBy == 'id' ? reverseSortDir : 'asc'})}">
                                         ID
                                         <i class="bi"
                                             th:classappend="${sortBy == 'id' ? (sortDir == 'asc' ? 'bi-sort-numeric-down' : 'bi-sort-numeric-up') : 'bi-filter'}"></i>
@@ -86,31 +86,31 @@
                                 </th>
                                 <th>
                                     <a class="text-white text-decoration-none"
-                                        th:href="@{/jurusan(keyword=${keyword}, sortBy='namaJurusan', sortDir=${sortBy == 'namaJurusan' ? reverseSortDir : 'asc'})}">
-                                        Nama Jurusan
+                                        th:href="@{/merk(keyword=${keyword}, sortBy='namaMerk', sortDir=${sortBy == 'namaMerk' ? reverseSortDir : 'asc'})}">
+                                        Nama Merk
                                         <i class="bi"
-                                            th:classappend="${sortBy == 'namaJurusan' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
+                                            th:classappend="${sortBy == 'namaMerk' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
                                     </a>
                                 </th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="jurusan : ${jurusanList}">
-                                <td th:text="${jurusan.id}"></td>
-                                <td th:text="${jurusan.namaJurusan}"></td>
+                            <tr th:each="merk : ${merkList}">
+                                <td th:text="${merk.id}"></td>
+                                <td th:text="${merk.namaMerk}"></td>
                                 <td>
-                                    <a th:href="@{/jurusan/edit/{id}(id=${jurusan.id})}" class="btn btn-sm btn-warning">
+                                    <a th:href="@{/merk/edit/{id}(id=${merk.id})}" class="btn btn-sm btn-warning">
                                         <i class="bi bi-pencil"></i> Edit
                                     </a>
-                                    <a th:href="@{/jurusan/delete/{id}(id=${jurusan.id})}" class="btn btn-sm btn-danger"
-                                        onclick="return confirm('Yakin ingin menghapus jurusan ini?')">
+                                    <a th:href="@{/merk/delete/{id}(id=${merk.id})}" class="btn btn-sm btn-danger"
+                                        onclick="return confirm('Yakin ingin menghapus merk ini?')">
                                         <i class="bi bi-trash"></i> Hapus
                                     </a>
                                 </td>
                             </tr>
-                            <tr th:if="${jurusanList.empty}">
-                                <td colspan="3" class="text-center">Tidak ada data jurusan</td>
+                            <tr th:if="${merkList.empty}">
+                                <td colspan="3" class="text-center">Tidak ada data merk</td>
                             </tr>
                         </tbody>
                     </table>

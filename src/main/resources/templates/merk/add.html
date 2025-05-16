@@ -6,7 +6,7 @@
     <div layout:fragment="main-content">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h4 th:text="${isEdit ? 'Edit Jurusan' : 'Tambah Jurusan'}">Tambah Jurusan</h4>
+                <h4 th:text="${isEdit ? 'Edit Merk' : 'Tambah Merk'}">Tambah Merk</h4>
             </div>
             <div class="card-body">
                 <!-- Error message -->
@@ -16,18 +16,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 
-                <form th:action="${isEdit ? '/jurusan/edit/' + jurusan.id : '/jurusan/add'}" 
-                      th:object="${jurusan}" method="post" class="needs-validation" novalidate>
+                <form th:action="${isEdit ? '/merk/edit/' + merk.id : '/merk/add'}" 
+                      th:object="${merk}" method="post" class="needs-validation" novalidate>
                     
                     <!-- Hidden ID field for edit operations -->
                     <input type="hidden" th:field="*{id}" />
                     
                     <div class="mb-3">
-                        <label for="namaJurusan" class="form-label">Nama Jurusan</label>
-                        <input type="text" class="form-control" id="namaJurusan" 
-                               th:field="*{namaJurusan}" required>
+                        <label for="namaMerk" class="form-label">Nama Merk</label>
+                        <input type="text" class="form-control" id="namaMerk" 
+                               th:field="*{namaMerk}" required>
                         <div class="invalid-feedback">
-                            Nama jurusan tidak boleh kosong
+                            Nama merk tidak boleh kosong
                         </div>
                     </div>
                     
@@ -35,7 +35,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-save"></i> Simpan
                         </button>
-                        <a href="/jurusan" class="btn btn-secondary">
+                        <a href="/merk" class="btn btn-secondary">
                             <i class="bi bi-arrow-left"></i> Kembali
                         </a>
                     </div>
