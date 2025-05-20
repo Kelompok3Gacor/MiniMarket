@@ -1,5 +1,46 @@
-<footer th:fragment="footer" class="text-center py-3 mt-4 bg-light">
+<footer th:fragment="footer" class="text-center py-4 galaxy-footer">
     <div class="container">
-        <p class="mb-0">&copy; Kelompok 3 B Gacorr</p>
+        <p class="mb-0">&copy; Kelompok 3 B</p>
     </div>
-</footer>x
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        .galaxy-footer {
+            background: linear-gradient(135deg, #0a001f 0%, #1b0034 100%);
+            color: #c8a9ff;
+            font-family: 'Orbitron', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .galaxy-footer::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: radial-gradient(#ffffff33 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: starsMovement 60s linear infinite;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .galaxy-footer p {
+            position: relative;
+            z-index: 1;
+            margin: 0;
+        }
+
+        @keyframes starsMovement {
+            from {
+                transform: translate(0, 0);
+            }
+            to {
+                transform: translate(100px, 100px);
+            }
+        }
+    </style>
+</footer>

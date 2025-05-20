@@ -17,15 +17,15 @@ public class BarangService {
 
     public BarangService() {
         // Data awal
-        Merk merkTI = new Merk(1L, "Teknik Informatika");
-        Merk merkSI = new Merk(2L, "Sistem Informasi");
-        merkList.add(merkTI);
-        merkList.add(merkSI);
+        Merk merkMie = new Merk(1L, "Mie Sedap");
+        Merk merkCoffe = new Merk(2L, "Harum Alam");
+        merkList.add(merkMie);
+        merkList.add(merkCoffe);
 
-        barangList.add(new Barang(1L, "Wahyu", merkTI));
-        barangList.add(new Barang(2L, "Andi", merkSI));
-        barangList.add(new Barang(3L, "Budi", merkTI));
-        barangList.add(new Barang(4L, "Cindy", merkSI));
+        barangList.add(new Barang(1L, "Mie Kuah Rasa Soto", merkMie));
+        barangList.add(new Barang(2L, "Mie Kuah Rasa Kari Ayam", merkCoffe));
+        barangList.add(new Barang(3L, "Neo Coffe Tiramisu", merkMie));
+        barangList.add(new Barang(4L, "Neo Coffe Moccachino", merkCoffe));
     }
 
     // CRUD Barang

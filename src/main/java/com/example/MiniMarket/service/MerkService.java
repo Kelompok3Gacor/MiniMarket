@@ -13,10 +13,10 @@ public class MerkService {
 
     public MerkService() {
         // Data awal
-        Merk merkTI = new Merk(1L, "Teknik Informatika");
-        Merk merkSI = new Merk(2L, "Sistem Informasi");
-        merkList.add(merkTI);
-        merkList.add(merkSI);
+        Merk merkMie = new Merk(1L, "Mie Sedap");
+        Merk merkCoffe = new Merk(2L, "Harum Alam");
+        merkList.add(merkMie);
+        merkList.add(merkCoffe);
 
     }
 

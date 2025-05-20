@@ -1,19 +1,97 @@
 <header th:fragment="header">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Minimarket online Toko Nopan</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div th:if="${session.loggedInUser}" class="d-flex">
-                    <span class="navbar-text me-3">
-                        <i class="bi bi-person-circle"></i>
-                        <span th:text="${session.loggedInUser}">Username</span>
-                    </span>
-                    <a href="/auth/logout" class="btn btn-outline-danger">Logout</a>
-                </div>
-            </div>
+  <style>
+    .galaxy-navbar {
+      background: linear-gradient(135deg, #0a001f 0%, #1b0034 100%);
+      border-bottom: 2px solid #7048e8;
+      box-shadow: 0 4px 15px rgba(112, 72, 232, 0.3);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .galaxy-navbar::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image: radial-gradient(#ffffff55 1px, transparent 1px);
+      background-size: 20px 20px;
+      animation: moveStars 60s linear infinite;
+      z-index: 0;
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    @keyframes moveStars {
+      from {
+        transform: translate(0, 0);
+      }
+      to {
+        transform: translate(100px, 100px);
+      }
+    }
+
+    .galaxy-navbar .navbar-brand,
+    .galaxy-navbar .navbar-text,
+    .galaxy-navbar .nav-link {
+      color: #d6b3ff !important;
+      z-index: 2;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .galaxy-navbar .btn-outline-light {
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+      color: #fff;
+      border-color: #a970ff;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .galaxy-navbar .btn-outline-light::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300%;
+      height: 300%;
+      background: radial-gradient(circle, rgba(169, 112, 255, 0.5) 0%, transparent 70%);
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.4s ease-out, opacity 0.4s ease;
+      opacity: 0;
+      z-index: -1;
+    }
+
+    .galaxy-navbar .btn-outline-light:hover::before {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    .galaxy-navbar .btn-outline-light:hover {
+      color: #fff;
+      border-color: #ff4dff;
+      box-shadow: 0 0 10px #a970ff88, 0 0 20px #a970ff44;
+    }
+  </style>
+
+  <nav class="navbar navbar-expand-md mb-4 galaxy-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Mini Market</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div th:if="${session.loggedInUser}" class="d-flex align-items-center ms-auto">
+          <span class="navbar-text me-3">
+            <i class="bi bi-person-circle"></i>
+            <span th:text="${session.loggedInUser}">Username</span>
+          </span>
+          <a href="/auth/logout" class="btn btn-outline-light">Logout</a>
         </div>
-    </nav>
+      </div>
+    </div>
+  </nav>
 </header>

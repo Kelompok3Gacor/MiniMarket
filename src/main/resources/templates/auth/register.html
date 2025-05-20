@@ -1,77 +1,266 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background: radial-gradient(ellipse at bottom, #1b0034 0%, #0a001f 100%);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .register-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #7048e8;
+      padding: 40px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      z-index: 1;
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 15px #a970ff44;
+    }
+
+    .register-box h2 {
+      text-align: center;
+      color: #d6b3ff;
+      margin-bottom: 20px;
+    }
+
+    .form-control {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      box-shadow: 0 0 0 0.25rem rgba(169, 112, 255, 0.25);
+    }
+
+    .btn-purple {
+      background: #a970ff;
+      color: white;
+      font-weight: bold;
+    }
+
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 10px;
+      background-color: #ffffff00;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .sparkle {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, #ffffff, #a970ff);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 998;
+      animation: sparkle-fade 0.5s forwards;
+    }
+
+    @keyframes sparkle-fade {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(3); }
+    }
+    .planet {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.8;
+    z-index: 0;
+    animation: floatPlanet 6s ease-in-out infinite alternate;
+    }
+
+    /* Inner planet (spinning) */
+    .planet-inner {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    animation: spinPlanet 30s linear infinite;
+    }
+
+    /* Masing-masing planet */
+    .planet1 {
+    width: 120px;
+    height: 120px;
+    top: 10%;
+    left: 10%;
+    }
+    .planet1 .planet-inner {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Mercury_render_with_Blender_01.png/240px-Mercury_render_with_Blender_01.png');
+    }
+
+    .planet2 {
+    width: 180px;
+    height: 180px;
+    bottom: 5%;
+    right: 15%;
+    }
+    .planet2 .planet-inner {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Africa_and_Europe_from_a_Million_Miles_Away.png/240px-Africa_and_Europe_from_a_Million_Miles_Away.png');
+    }
+
+    .planet3 {
+    width: 90px;
+    height: 90px;
+    top: 60%;
+    left: 80%;
+    }
+    .planet3 .planet-inner {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/640px-OSIRIS_Mars_true_color.jpg');
+    }
+
+    /* Animasi ngambang */
+    @keyframes floatPlanet {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(15px); }
+    }
+
+    /* Animasi muter */
+    @keyframes spinPlanet {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
+<body>
+  <div class="stars"></div>
+  <div class="cursor"></div>
+    <div class="planet planet1"><div class="planet-inner"></div></div>
+    <div class="planet planet2"><div class="planet-inner"></div></div>
+    <div class="planet planet3"><div class="planet-inner"></div></div>
+  <div class="register-box">
+    <h2>Register</h2>
 
-<body class="bg-light">
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
-            <h2 class="text-center mb-4">Register</h2>
-            
-            <!-- Alert for errors -->
-            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                <span th:text="${error}">Error message</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            
-            <!-- Alert for info messages -->
-            <div th:if="${info}" class="alert alert-info alert-dismissible fade show" role="alert">
-                <i class="bi bi-info-circle-fill me-2"></i>
-                <span th:text="${info}">Info message</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            
-            <form th:action="@{/auth/register}" method="post" class="needs-validation" novalidate>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-person"></i></span>
-                        <input id="username" name="username" type="text" class="form-control" required minlength="3">
-                        <div class="invalid-feedback">Username harus minimal 3 karakter</div>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-key"></i></span>
-                        <input id="password" name="password" type="password" class="form-control" required minlength="6">
-                        <div class="invalid-feedback">Password harus minimal 6 karakter</div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success w-100">
-                    <i class="bi bi-person-plus me-2"></i>Register
-                </button>
-                <p class="mt-3 text-center">Sudah punya akun? <a href="/auth/login">Login</a></p>
-            </form>
-        </div>
+    <!-- Alerts -->
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      <span th:text="${error}">Error message</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    
-    <!-- Form validation script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const forms = document.querySelectorAll('.needs-validation');
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                    }
-                    form.classList.add('was-validated');
-                }, false);
-            });
-        });
-    </script>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+    <div th:if="${info}" class="alert alert-info alert-dismissible fade show" role="alert">
+      <i class="bi bi-info-circle-fill me-2"></i>
+      <span th:text="${info}">Info message</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <form th:action="@{/auth/register}" method="post" class="needs-validation" novalidate>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input id="username" name="username" type="text" class="form-control" required minlength="3">
+        <div class="invalid-feedback">Username harus minimal 3 karakter</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" name="password" type="password" class="form-control" required minlength="6">
+        <div class="invalid-feedback">Password harus minimal 6 karakter</div>
+      </div>
+
+      <button type="submit" class="btn btn-purple w-100">
+        <i class="bi bi-person-plus me-2"></i> Buat Akun
+      </button>
+
+      <p class="mt-3 text-center">Sudah punya akun? <a href="/auth/login" class="text-decoration-none text-info">Login</a></p>
+    </form>
+  </div>
+
+  <script>
+    // Bintang-bintang random
+    const starContainer = document.querySelector('.stars');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 2}s`;
+      starContainer.appendChild(star);
+    }
+
+    // Cursor sparkle efek
+    const cursor = document.querySelector('.cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.top = e.clientY + 'px';
+      cursor.style.left = e.clientX + 'px';
+
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.top = e.clientY + 'px';
+      sparkle.style.left = e.clientX + 'px';
+      document.body.appendChild(sparkle);
+
+      setTimeout(() => sparkle.remove(), 500);
+    });
+
+    // Validasi form
+    document.addEventListener('DOMContentLoaded', function () {
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
