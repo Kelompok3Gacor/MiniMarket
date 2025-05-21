@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
         body {
             background: linear-gradient(to bottom, #0a001f 0%, #1b0034 100%);
             font-family: 'Orbitron', sans-serif;
@@ -19,19 +20,32 @@
         h2 {
             color: #c8a9ff;
         }
-
-        .btn-primary, .btn-secondary {
-            background-color: transparent;
-            border: 1px solid #a970ff;
-            color: #a970ff;
+        .btn-warning {
+            background-color: #f39c12;
+            border: none;
+            color: white;
+            font-weight: bold;
             transition: 0.3s ease;
         }
 
-        .btn-primary:hover, .btn-secondary:hover {
-            background-color: #a970ff;
-            color: #0a001f;
+        .btn-warning:hover {
+            background-color: #e67e22;
+            transform: scale(1.05);
         }
 
+        /* Tombol Hapus */
+        .btn-danger {
+            background-color: #e74c3c;
+            border: none;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
         .card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -44,16 +58,39 @@
         }
 
         .table {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #e0d4ff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(169, 112, 255, 0.2);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(169, 112, 255, 0.1);
+            transition: background-color 0.3s ease;
         }
 
         .table thead {
-            background-color: rgba(169, 112, 255, 0.2);
-            border-bottom: 1px solid rgba(169, 112, 255, 0.4);
+            background: linear-gradient(90deg, #6f42c1, #8e44ad);
+            color: white;
+            border-bottom: 2px solid #a970ff;
         }
 
+        .table thead th {
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Striping Lebih Halus */
         .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: rgba(255, 255, 255, 0.025);
         }
 
         .alert {
@@ -75,26 +112,6 @@
         .form-select option {
             background-color: #1b0034;
             color: #e0d4ff;
-        }
-
-        .btn-warning {
-            background-color: #ffb347;
-            color: #1b0034;
-            border: none;
-        }
-
-        .btn-danger {
-            background-color: #ff4b5c;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-danger:hover {
-            background-color: #ff2f49;
-        }
-
-        .btn-warning:hover {
-            background-color: #ffa726;
         }
         .sidebar {
             min-height: calc(100vh - 56px);
