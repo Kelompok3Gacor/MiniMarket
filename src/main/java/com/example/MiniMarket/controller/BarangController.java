@@ -61,6 +61,12 @@ public class BarangController {
             return "barang/add";
         }
         
+        if (barang.getHarga() == null || barang.getHarga() <= 0) {
+        model.addAttribute("error", "Harga harus lebih dari 0");
+        model.addAttribute("merkList", merkService.getAllMerk());
+        model.addAttribute("isEdit", false);
+        return "barang/add";
+    }
         // Get the full Merk object from the ID
         Long merkId = barang.getMerk().getId();
         Merk merk = merkService.getMerkById(merkId);
@@ -109,6 +115,13 @@ public class BarangController {
             model.addAttribute("merkList", merkService.getAllMerk());
             model.addAttribute("isEdit", true);
             return "barang/add";
+        }
+
+         if (barang.getHarga() == null || barang.getHarga() <= 0) {
+            model.addAttribute("error", "Harga harus lebih dari 0");
+            model.addAttribute("merkList", merkService.getAllMerk());
+            model.addAttribute("isEdit", true);
+        return "barang/add";
         }
         
         // Ensure the ID from path is set on the object

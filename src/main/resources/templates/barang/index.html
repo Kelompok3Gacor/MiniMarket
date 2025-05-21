@@ -87,16 +87,21 @@
                                     <a class="text-white text-decoration-none"
                                         th:href="@{/barang(keyword=${keyword}, sortBy='nama', sortDir=${sortBy == 'nama' ? reverseSortDir : 'asc'})}">
                                         Nama
-                                        <i class="bi"
-                                            th:classappend="${sortBy == 'nama' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
+                                        <i class="bi" th:classappend="${sortBy == 'nama' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
                                     </a>
                                 </th>
                                 <th>
                                     <a class="text-white text-decoration-none"
                                         th:href="@{/barang(keyword=${keyword}, sortBy='merk', sortDir=${sortBy == 'merk' ? reverseSortDir : 'asc'})}">
                                         Merk
-                                        <i class="bi"
-                                            th:classappend="${sortBy == 'merk' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
+                                        <i class="bi"th:classappend="${sortBy == 'merk' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
+                                    </a>
+                                </th>
+                                    <th>
+                                    <a class="text-white text-decoration-none"
+                                        th:href="@{/barang(keyword=${keyword}, sortBy='harga', sortDir=${sortBy == 'harga' ? reverseSortDir : 'asc'})}">
+                                        Harga
+                                        <i class="bi" th:classappend="${sortBy == 'harga' ? (sortDir == 'asc' ? 'bi-sort-alpha-down' : 'bi-sort-alpha-up') : 'bi-filter'}"></i>
                                     </a>
                                 </th>
                                 <th>Aksi</th>
@@ -107,6 +112,8 @@
                                 <td th:text="${barang.id}"></td>
                                 <td th:text="${barang.nama}"></td>
                                 <td th:text="${barang.merk.namaMerk}"></td>
+                                 <td th:text="'Rp ' + ${#numbers.formatDecimal(barang.harga, 0, 'POINT', 2, 'COMMA')}">Rp 0</td>
+
                                 <td>
                                     <a th:href="@{/barang/edit/{id}(id=${barang.id})}"
                                         class="btn btn-sm btn-warning">

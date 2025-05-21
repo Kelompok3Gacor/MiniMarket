@@ -22,10 +22,10 @@ public class BarangService {
         merkList.add(merkMie);
         merkList.add(merkCoffe);
 
-        barangList.add(new Barang(1L, "Mie Kuah Rasa Soto", merkMie));
-        barangList.add(new Barang(2L, "Mie Kuah Rasa Kari Ayam", merkCoffe));
-        barangList.add(new Barang(3L, "Neo Coffe Tiramisu", merkMie));
-        barangList.add(new Barang(4L, "Neo Coffe Moccachino", merkCoffe));
+        barangList.add(new Barang(1L, "Mie Kuah Rasa Soto", merkMie, 10000));
+        barangList.add(new Barang(2L, "Mie Kuah Rasa Kari Ayam", merkCoffe, 12000));
+        barangList.add(new Barang(3L, "Neo Coffe Tiramisu", merkMie, 15000));
+        barangList.add(new Barang(4L, "Neo Coffe Moccachino", merkCoffe,20000));
     }
 
     // CRUD Barang
@@ -56,6 +56,9 @@ public class BarangService {
                     break;
                 case "merk":
                     comparator = Comparator.comparing(m -> m.getMerk().getNamaMerk());
+                    break;
+                case "harga":
+                    comparator = Comparator.comparing(Barang::getHarga);
                     break;
                 case "id":
                 default:
