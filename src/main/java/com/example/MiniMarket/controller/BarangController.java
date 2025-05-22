@@ -89,19 +89,24 @@ public class BarangController {
         }
 
         try {
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        String uploadDir = System.getProperty("user.dir") + "/uploads/";
-        Path path = Paths.get(uploadDir + fileName);
-        Files.createDirectories(path.getParent());
-        file.transferTo(path.toFile());
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            
+            // Pastikan path uploadnya bener dan aman
+            String uploadDir = System.getProperty("user.dir") + "/uploads/";
+            Path uploadPath = Paths.get(uploadDir);
+            Files.createDirectories(uploadPath); // Buat folder kalau belum ada
 
-        barang.setFoto(fileName); // Simpan nama file aja ke DB
-    } catch (IOException e) {
-        model.addAttribute("error", "Gagal upload file: " + e.getMessage());
-        model.addAttribute("merkList", merkService.getAllMerk());
-        model.addAttribute("isEdit", false);
-        return "barang/add";
-    }
+            Path filePath = uploadPath.resolve(fileName); // Lebih aman daripada + operator
+            file.transferTo(filePath.toFile());
+
+            barang.setFoto(fileName);
+        } catch (IOException e) {
+            model.addAttribute("error", "Gagal upload file: " + e.getMessage());
+            model.addAttribute("merkList", merkService.getAllMerk());
+            model.addAttribute("isEdit", true);
+            return "barang/add";
+        }
+
 
 
         // Get the full Merk object from the ID
@@ -115,7 +120,6 @@ public class BarangController {
         }
         
         barang.setMerk(merk);
-        barang.setId(System.currentTimeMillis()); // Generate ID
         barangService.addBarang(barang);
         
         redirectAttributes.addFlashAttribute("success", "Data barang berhasil ditambahkan");
@@ -137,58 +141,70 @@ public class BarangController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editBarang(@PathVariable Long id, @ModelAttribute Barang barang, Model model, RedirectAttributes redirectAttributes) {
-        // Validate input
-        if (barang.getNama() == null || barang.getNama().trim().isEmpty()) {
-            model.addAttribute("error", "Nama barang tidak boleh kosong");
-            model.addAttribute("merkList", merkService.getAllMerk());
-            model.addAttribute("isEdit", true);
-            return "barang/add";
-        }
-        
-        if (barang.getMerk() == null || barang.getMerk().getId() == null) {
-            model.addAttribute("error", "Pilih merk untuk barang");
-            model.addAttribute("merkList", merkService.getAllMerk());
-            model.addAttribute("isEdit", true);
-            return "barang/add";
-        }
+public String editBarang(@PathVariable Long id, @ModelAttribute Barang barangForm, Model model, RedirectAttributes redirectAttributes) {
 
-         if (barang.getHarga() == null || barang.getHarga() <= 0) {
-            model.addAttribute("error", "Harga harus lebih dari 0");
-            model.addAttribute("merkList", merkService.getAllMerk());
-            model.addAttribute("isEdit", true);
-        return "barang/add";
-        }
-        if (barang.getStok() < 0) {
-            model.addAttribute("error", "Stok tidak boleh negatif");
-            model.addAttribute("merkList", merkService.getAllMerk());
-            model.addAttribute("isEdit", true);
-            return "barang/add";
-        }
-        // Ensure the ID from path is set on the object
-        barang.setId(id);
-        
-        // Get the full Merk object from the ID
-        Long merkId = barang.getMerk().getId();
-        Merk merk = merkService.getMerkById(merkId);
-        if (merk == null) {
-            model.addAttribute("error", "Merk tidak valid");
-            model.addAttribute("merkList", merkService.getAllMerk());
-            model.addAttribute("isEdit", true);
-            return "barang/add";
-        }
-        Barang existingBarang = barangService.getBarangById(id);
-        if (existingBarang == null) {
-            redirectAttributes.addFlashAttribute("error", "Barang tidak ditemukan");
-            return "redirect:/barang";
-        }
-        barang.setFoto(existingBarang.getFoto()); // Tetap pakai foto lama
-        barang.setMerk(merk);
-        barangService.updateBarang(barang);
-        
-        redirectAttributes.addFlashAttribute("success", "Data barang berhasil diperbarui");
+    Barang barang = barangService.getBarangById(id);
+    if (barang == null) {
+        redirectAttributes.addFlashAttribute("error", "Barang tidak ditemukan");
         return "redirect:/barang";
     }
+
+    // Validasi dari form
+    if (barangForm.getNama() == null || barangForm.getNama().trim().isEmpty()) {
+        model.addAttribute("error", "Nama barang tidak boleh kosong");
+        model.addAttribute("merkList", merkService.getAllMerk());
+        model.addAttribute("isEdit", true);
+        model.addAttribute("barang", barangForm);
+        return "barang/add";
+    }
+
+    if (barangForm.getMerk() == null || barangForm.getMerk().getId() == null) {
+        model.addAttribute("error", "Pilih merk untuk barang");
+        model.addAttribute("merkList", merkService.getAllMerk());
+        model.addAttribute("isEdit", true);
+        model.addAttribute("barang", barangForm);
+        return "barang/add";
+    }
+
+    if (barangForm.getHarga() == null || barangForm.getHarga() <= 0) {
+        model.addAttribute("error", "Harga harus lebih dari 0");
+        model.addAttribute("merkList", merkService.getAllMerk());
+        model.addAttribute("isEdit", true);
+        model.addAttribute("barang", barangForm);
+        return "barang/add";
+    }
+
+    if (barangForm.getStok() < 0) {
+        model.addAttribute("error", "Stok tidak boleh negatif");
+        model.addAttribute("merkList", merkService.getAllMerk());
+        model.addAttribute("isEdit", true);
+        model.addAttribute("barang", barangForm);
+        return "barang/add";
+    }
+
+    // Ambil Merk dari DB
+    Merk merk = merkService.getMerkById(barangForm.getMerk().getId());
+    if (merk == null) {
+        model.addAttribute("error", "Merk tidak valid");
+        model.addAttribute("merkList", merkService.getAllMerk());
+        model.addAttribute("isEdit", true);
+        model.addAttribute("barang", barangForm);
+        return "barang/add";
+    }
+
+    // Update nilai properti dari form
+    barang.setNama(barangForm.getNama());
+    barang.setHarga(barangForm.getHarga());
+    barang.setStok(barangForm.getStok());
+    barang.setMerk(merk);
+    // Foto tetap yang lama (tidak perlu diubah)
+
+    barangService.updateBarang(barang);
+
+    redirectAttributes.addFlashAttribute("success", "Data barang berhasil diperbarui");
+    return "redirect:/barang";
+}
+
 
     @GetMapping("/delete/{id}")
     public String deleteBarang(@PathVariable Long id, RedirectAttributes redirectAttributes) {
