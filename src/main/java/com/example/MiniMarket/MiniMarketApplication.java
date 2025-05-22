@@ -1,3 +1,4 @@
+
 package com.example.MiniMarket;
 
 import org.springframework.boot.SpringApplication;

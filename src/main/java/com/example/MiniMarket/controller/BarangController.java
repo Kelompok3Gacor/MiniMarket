@@ -8,6 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Controller
 @RequestMapping("/barang")
 public class BarangController {
@@ -45,7 +51,8 @@ public class BarangController {
     }
 
     @PostMapping("/add")
-    public String addBarang(@ModelAttribute Barang barang, Model model, RedirectAttributes redirectAttributes) {
+    public String addBarang(@ModelAttribute Barang barang, @RequestParam("file") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
+
         // Validate input
         if (barang.getNama() == null || barang.getNama().trim().isEmpty()) {
             model.addAttribute("error", "Nama barang tidak boleh kosong");
@@ -62,11 +69,41 @@ public class BarangController {
         }
         
         if (barang.getHarga() == null || barang.getHarga() <= 0) {
-        model.addAttribute("error", "Harga harus lebih dari 0");
+            model.addAttribute("error", "Harga harus lebih dari 0");
+            model.addAttribute("merkList", merkService.getAllMerk());
+            model.addAttribute("isEdit", false);
+            return "barang/add";
+        }
+        if (barang.getStok() < 0) {
+            model.addAttribute("error", "Stok tidak boleh negatif");
+            model.addAttribute("merkList", merkService.getAllMerk());
+            model.addAttribute("isEdit", false);
+            return "barang/add";
+        }
+        // Cek jika file kosong
+        if (file.isEmpty()) {
+            model.addAttribute("error", "Foto tidak boleh kosong");
+            model.addAttribute("merkList", merkService.getAllMerk());
+            model.addAttribute("isEdit", false);
+            return "barang/add";
+        }
+
+        try {
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        String uploadDir = System.getProperty("user.dir") + "/uploads/";
+        Path path = Paths.get(uploadDir + fileName);
+        Files.createDirectories(path.getParent());
+        file.transferTo(path.toFile());
+
+        barang.setFoto(fileName); // Simpan nama file aja ke DB
+    } catch (IOException e) {
+        model.addAttribute("error", "Gagal upload file: " + e.getMessage());
         model.addAttribute("merkList", merkService.getAllMerk());
         model.addAttribute("isEdit", false);
         return "barang/add";
     }
+
+
         // Get the full Merk object from the ID
         Long merkId = barang.getMerk().getId();
         Merk merk = merkService.getMerkById(merkId);
@@ -100,8 +137,7 @@ public class BarangController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editBarang(@PathVariable Long id, @ModelAttribute Barang barang, 
-                              Model model, RedirectAttributes redirectAttributes) {
+    public String editBarang(@PathVariable Long id, @ModelAttribute Barang barang, Model model, RedirectAttributes redirectAttributes) {
         // Validate input
         if (barang.getNama() == null || barang.getNama().trim().isEmpty()) {
             model.addAttribute("error", "Nama barang tidak boleh kosong");
@@ -123,7 +159,12 @@ public class BarangController {
             model.addAttribute("isEdit", true);
         return "barang/add";
         }
-        
+        if (barang.getStok() < 0) {
+            model.addAttribute("error", "Stok tidak boleh negatif");
+            model.addAttribute("merkList", merkService.getAllMerk());
+            model.addAttribute("isEdit", true);
+            return "barang/add";
+        }
         // Ensure the ID from path is set on the object
         barang.setId(id);
         
@@ -136,7 +177,12 @@ public class BarangController {
             model.addAttribute("isEdit", true);
             return "barang/add";
         }
-        
+        Barang existingBarang = barangService.getBarangById(id);
+        if (existingBarang == null) {
+            redirectAttributes.addFlashAttribute("error", "Barang tidak ditemukan");
+            return "redirect:/barang";
+        }
+        barang.setFoto(existingBarang.getFoto()); // Tetap pakai foto lama
         barang.setMerk(merk);
         barangService.updateBarang(barang);
         

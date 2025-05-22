@@ -5,17 +5,21 @@ public class Barang {
     private String nama;
     private Merk merk;
     private int harga;
+    private int stok;
+    private String foto;
 
 
     // Constructor
     public Barang() {
     }
 
-    public Barang(Long id, String nama, Merk merk, int harga) {
+    public Barang(Long id, String nama, Merk merk, int harga, int stok, String foto) {
         this.id = id;
         this.nama = nama;
         this.merk = merk;
         this.harga = harga;
+        this.stok = stok;
+        this.foto = foto;
     }
 
     // Getter dan Setter
@@ -42,5 +46,17 @@ public class Barang {
     }
     public void setHarga(Integer harga) {
         this.harga = harga;
+    }
+    public int getStok() {
+        return stok;
+    }
+    public void setStok(int stok) {
+        this.stok = stok;
+    }
+    public String getFoto() {
+        return foto;
+    }
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/merk")
+
 public class MerkController {
     @Autowired
     private MerkService merkService;
@@ -55,7 +56,7 @@ public class MerkController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        Merk merk = merkService.getMerkByID(id);
+        Merk merk = merkService.getMerkById(id);
         if (merk == null) {
             model.addAttribute("error", "Merk dengan ID " + id + " tidak ditemukan");
             return "redirect:/merk";
@@ -86,7 +87,7 @@ public class MerkController {
     
     @GetMapping("/delete/{id}")
     public String deleteMerk(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Merk merk = merkService.getMerkByID(id);
+        Merk merk = merkService.getMerkById(id);
         if (merk != null) {
             merkService.deleteMerk(id);
             redirectAttributes.addFlashAttribute("success", "Merk '" + merk.getNamaMerk() + "' berhasil dihapus");

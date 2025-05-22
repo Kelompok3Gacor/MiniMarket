@@ -1,91 +1,69 @@
 package com.example.MiniMarket.service;
-import org.springframework.stereotype.Service;
 import com.example.MiniMarket.model.Merk;
-import java.util.ArrayList;
+import com.example.MiniMarket.service.MerkService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.ui.Model;
+import com.example.MiniMarket.repository.MerkRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Controller
+@RequestMapping("/merk")
 @Service
 public class MerkService {
-    private final List<Merk> merkList = new ArrayList<>();
-    private Long idCounter = 3L;
-
-    public MerkService() {
-        // Data awal
-        Merk merkMie = new Merk(1L, "Mie Sedap");
-        Merk merkCoffe = new Merk(2L, "Harum Alam");
-        merkList.add(merkMie);
-        merkList.add(merkCoffe);
-
-    }
+    @Autowired
+    private MerkRepository merkRepository;
 
     public List<Merk> getAllMerk() {
-        return merkList;
+        return merkRepository.findAll();
     }
-    
-    // Search and Sort method
+
     public List<Merk> searchMerk(String keyword, String sortBy, String sortDir) {
-        List<Merk> result = merkList;
-        
-        // Apply search if keyword provided
+        List<Merk> result;
+
         if (keyword != null && !keyword.isEmpty()) {
-            final String lowerKeyword = keyword.toLowerCase();
-            result = result.stream()
-                .filter(j -> j.getNamaMerk().toLowerCase().contains(lowerKeyword))
-                .collect(Collectors.toList());
+            result = merkRepository.findByNamaMerkContainingIgnoreCase(keyword);
+        } else {
+            result = merkRepository.findAll();
         }
-        
-        // Apply sorting
-        if (sortBy != null && !sortBy.isEmpty()) {
-            Comparator<Merk> comparator;
-            
-            switch (sortBy) {
-                case "namaMerk":
-                    comparator = Comparator.comparing(Merk::getNamaMerk);
-                    break;
-                case "id":
-                default:
-                    comparator = Comparator.comparing(Merk::getId);
-                    break;
-            }
-            
-            // Apply sort direction
-            if ("desc".equals(sortDir)) {
-                comparator = comparator.reversed();
-            }
-            
-            result = result.stream()
-                .sorted(comparator)
-                .collect(Collectors.toList());
+
+        Comparator<Merk> comparator;
+        switch (sortBy) {
+            case "namaMerk":
+                comparator = Comparator.comparing(Merk::getNamaMerk);
+                break;
+            case "id":
+            default:
+                comparator = Comparator.comparing(Merk::getId);
+                break;
         }
-        
-        return result;
+
+        if ("desc".equals(sortDir)) {
+            comparator = comparator.reversed();
+        }
+
+        return result.stream().sorted(comparator).collect(Collectors.toList());
     }
 
     public Merk saveMerk(Merk merk) {
-        if (merk.getId() == null) {
-            merk.setId(idCounter++);
-            merkList.add(merk);
-        }
-        return merk;
+        return merkRepository.save(merk);
     }
 
-    public Merk getMerkByID(Long id) {
-        return merkList.stream().filter(m -> m.getId().equals(id)).findFirst().orElse(null);
-    }
-    
-    public void updateMerk(Merk merk) {
-        merkList.replaceAll(m -> m.getId().equals(merk.getId()) ? merk : m);
-    }
-    
-    public void deleteMerk(Long id) {
-        merkList.removeIf(j -> j.getId().equals(id));
-    }
     public Merk getMerkById(Long id) {
-        return merkList.stream()
-            .filter(j -> j.getId().equals(id))
-            .findFirst()
-            .orElse(null);
+        return merkRepository.findById(id).orElse(null);
+    }
+
+    public void updateMerk(Merk merk) {
+        merkRepository.save(merk);
+    }
+
+    public void deleteMerk(Long id) {
+        merkRepository.deleteById(id);
     }
 }
