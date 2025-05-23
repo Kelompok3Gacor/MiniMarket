@@ -1,23 +1,28 @@
 package com.example.MiniMarket.service;
 
+import com.example.MiniMarket.model.User;
+import com.example.MiniMarket.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class UserService {
-    private final Map<String, String> users = new HashMap<>();
+
+    @Autowired
+    private UserRepository userRepository;
 
     public boolean register(String username, String password) {
-        if (users.containsKey(username)) {
-            return false; // Username already exists
+        if (userRepository.findByUsername(username) != null) {
+            return false;
         }
-        users.put(username, password);
+
+        User user = new User(username, password); 
+        userRepository.save(user);
         return true;
     }
 
     public boolean login(String username, String password) {
-        return users.containsKey(username) && users.get(username).equals(password);
+        User user = userRepository.findByUsername(username);
+        return user != null && user.getPassword().equals(password);
     }
 }
